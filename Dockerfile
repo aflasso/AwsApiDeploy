@@ -6,11 +6,11 @@ COPY ./MoneyBankService/MoneyBankService.Api/*.csproj ./MoneyBankService.Api/
 COPY ./MoneyBankService/MoneyBankService.Application/*.csproj ./MoneyBankService.Application/
 COPY ./MoneyBankService/MoneyBankService.Domain/*.csproj ./MoneyBankService.Domain/
 COPY ./MoneyBankService/MoneyBankService.Infrastructure/*.csproj ./MoneyBankService.Infrastructure/
-RUN dotnet restore 
+RUN dotnet restore MonyBankService.sln
 
 COPY ./MoneyBankService/. .
 WORKDIR /MoneyBankService/MoneyBankService.Api
-RUN dotnet publish -c release -o /app
+RUN dotnet publish -c release -o /app --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
