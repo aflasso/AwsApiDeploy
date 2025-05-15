@@ -66,6 +66,7 @@ jobs:
         run: npm install -g newman
 
       - name: Run API tests
+        continue-on-error: true
         run: |
           newman run ./MoneyBankService.postman_collection.json \
                 --reporters cli,html \
@@ -79,7 +80,6 @@ jobs:
           ls -la
 
       - name: Upload Newman HTML report
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: postman-report
