@@ -8,54 +8,28 @@ on:
 
 jobs:
 
-  build-and-push:
-    name: build and push image
+  test-locally:
+    name: Build, run, and test locally
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-    
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-    
-      - name: Build and push image
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image (without push)
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: true
-          tags: aflasso/dotnet-api:latest
+          load: true  # carga la imagen localmente, no la sube
+          tags: test-api:local
 
-  run-container:
-    name: run container
-    runs-on: [self-hosted]
-    needs: build-and-push
-
-    steps:
-    
-    - name: Pull Docker image
-      run: docker pull aflasso/dotnet-api
-      
-    - name: Stop and remove old container (if exists)
-      run: |
-          docker stop dotnet-api || true
-          docker rm dotnet-api || true
-
-    - name: Run new container with timestamp tag
-      run: |
-          docker run -dit --name dotnet-api -p 80:8080 aflasso/dotnet-api
-
-  postman-tests:
-    name: Run Postman tests
-    runs-on: ubuntu-latest
-    needs: run-container
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Run container in background
+        run: |
+          docker run -d --rm --name test-api -p 80:8080 test-api:local
+          sleep 5  # tiempo para que la API arranque
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -65,7 +39,7 @@ jobs:
       - name: Install Newman
         run: npm install -g newman newman-reporter-html
 
-      - name: Run API tests
+      - name: Run Postman tests
         run: |
           newman run MoneyBankService.postman_collection.json \
             --reporters cli,html \
@@ -77,4 +51,47 @@ jobs:
         with:
           name: postman-report
           path: newman-report.html
+
+  build-and-push:
+    name: Build and push image
+    runs-on: ubuntu-latest
+    needs: test-locally
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+  
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+  
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: aflasso/dotnet-api:latest
+
+  deploy:
+    name: Deploy to server
+    runs-on: [self-hosted]
+    needs: build-and-push
+
+    steps:
+      - name: Pull Docker image
+        run: docker pull aflasso/dotnet-api
+
+      - name: Stop and remove old container (if exists)
+        run: |
+          docker stop dotnet-api || true
+          docker rm dotnet-api || true
+
+      - name: Run new container
+        run: |
+          docker run -dit --name dotnet-api -p 80:8080 aflasso/dotnet-api
 
