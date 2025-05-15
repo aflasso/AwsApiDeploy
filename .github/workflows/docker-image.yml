@@ -28,7 +28,7 @@ jobs:
 
       - name: Test connection to remote MySQL
         run: |
-          docker run -dit mysql:8.0 mysql -h54.211.84.7 -uroot -p1234
+          docker run --rm mysql:8.0 mysql -h54.211.84.7 -uroot -p1234 -e "SHOW DATABASES;"
 
       - name: Run container in background
         run: |
