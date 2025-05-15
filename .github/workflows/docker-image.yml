@@ -94,3 +94,4 @@ jobs:
       - name: Run new container
         run: |
           docker run -dit --name dotnet-api -p 80:8080 aflasso/dotnet-api
+
