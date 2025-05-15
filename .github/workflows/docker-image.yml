@@ -63,14 +63,13 @@ jobs:
           node-version: '18'
 
       - name: Install Newman
-        run: npm install -g newman
+        run: npm install -g newman newman-reporter-html
 
       - name: Run API tests
         run: |
-          mkdir -p reports
-          newman run ./MoneyBankService.postman_collection.json \
-                --reporters cli,html \
-                --reporter-html-export reports/newman-report.html
+          newman run MoneyBankService.postman_collection.json \
+            --reporters cli,html \
+            --reporter-html-export newman-report.html
 
       - name: Debug files
         if: always()
@@ -79,14 +78,6 @@ jobs:
           pwd
           echo "Files:"
           ls -la
-
-      - name: Debug files
-        if: always()
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Files:"
-          ls -la reports
 
       - name: Upload Newman HTML report
         if: always()
