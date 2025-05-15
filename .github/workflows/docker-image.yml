@@ -67,5 +67,13 @@ jobs:
 
       - name: Run API tests
         run: |
-          newman run ./MoneyBankService.postman_collection.json
+          newman run ./MoneyBankService.postman_collection.json \
+                --reporters cli,html \
+                --reporter-html-export newman-report.html
+
+      - name: Upload Newman HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman-report
+          path: newman-report.html
 
