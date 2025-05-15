@@ -9,6 +9,7 @@ on:
 jobs:
 
   build-and-push:
+    name: build and push image
     runs-on: ubuntu-latest
     
     steps:
@@ -29,7 +30,7 @@ jobs:
           tags: aflasso/dotnet-api:latest
 
   run-container:
-
+    name: run container
     runs-on: [self-hosted]
     needs: build-and-push
 
