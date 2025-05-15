@@ -26,11 +26,18 @@ jobs:
           load: true  # carga la imagen localmente, no la sube
           tags: test-api:local
 
+      - name: Test connection to remote MySQL
+        run: |
+          docker run -dit mysql:8.0 mysql -h54.211.84.7 -uroot -p1234
+
       - name: Run container in background
         run: |
           docker run -d --rm --name test-api -p 80:8080 test-api:local
           sleep 5  # tiempo para que la API arranque
 
+      - name: docker ups
+        run: docker ps -a
+      
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
