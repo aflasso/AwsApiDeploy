@@ -27,3 +27,21 @@ jobs:
           context: .
           push: true
           tags: aflasso/dotnet-api:latest
+
+  run-container:
+
+    runs-on: [self-hosted]
+
+    steps:
+    
+    - name: Pull Docker image
+      run: docker pull aflasso/dotnet-api
+      
+    - name: Stop and remove old container (if exists)
+      run: |
+          docker stop dotnet-api || true
+          docker rm dotnet-api || true
+
+    - name: Run new container with timestamp tag
+      run: |
+          docker run -dit --name dotnet-api -p 80:80 aflasso/dotnet-api
