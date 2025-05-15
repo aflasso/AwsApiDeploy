@@ -1510,7 +1510,7 @@
 	"variable": [
 		{
 			"key": "BaseUrl",
-			"value": "https://localhost:8080/api",
+			"value": "http://localhost:80/api",
 			"type": "string"
 		},
 		{
