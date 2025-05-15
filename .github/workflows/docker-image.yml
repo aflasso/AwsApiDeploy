@@ -45,4 +45,4 @@ jobs:
 
     - name: Run new container with timestamp tag
       run: |
-          docker run -dit --name dotnet-api -p 80:80 aflasso/dotnet-api
+          docker run -dit --name dotnet-api -p 80:8080 aflasso/dotnet-api
