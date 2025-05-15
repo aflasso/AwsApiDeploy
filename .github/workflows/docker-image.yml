@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: CI
 
 on:
   push:
@@ -70,14 +70,6 @@ jobs:
           newman run MoneyBankService.postman_collection.json \
             --reporters cli,html \
             --reporter-html-export newman-report.html
-
-      - name: Debug files
-        if: always()
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Files:"
-          ls -la
 
       - name: Upload Newman HTML report
         if: always()
