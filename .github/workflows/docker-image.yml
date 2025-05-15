@@ -31,6 +31,7 @@ jobs:
   run-container:
 
     runs-on: [self-hosted]
+    needs: build-and-push
 
     steps:
     
