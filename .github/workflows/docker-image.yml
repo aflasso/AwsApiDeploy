@@ -28,7 +28,7 @@ jobs:
 
       - name: Test connection to remote MySQL
         run: |
-          docker run --rm mysql:8.0 mysql -h${{ secrets.MYSQL_HOST }} -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "SHOW DATABASES;"
+          docker run -d --name mysqldb mysql:8.0 mysql -h${{ secrets.MYSQL_HOST }} -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "SHOW DATABASES;"
 
       - name: Run container in background
         run: |
