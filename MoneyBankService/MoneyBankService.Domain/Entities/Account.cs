@@ -7,6 +7,7 @@ namespace MoneyBankService.Domain.Entities
     public class Account : EntityBase
     {
         [Required(ErrorMessage = "El campo de tipo cuenta es Requerido")]
+        [RegularExpression("[AC]")]
         public char AccountType { get; set; } = 'A';
 
         [DataType(DataType.Date)]
