@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
+using MoneyBankService.Domain.Common;
 
-namespace MoneyBankService.Domain.Common;
+namespace MoneyBankService.Application.Interfaces.Repositories;
 
 public interface IRepository<T> where T : EntityBase
 {
