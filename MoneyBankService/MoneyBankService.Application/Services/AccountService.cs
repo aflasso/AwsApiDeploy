@@ -1,4 +1,4 @@
-﻿using MoneyBankService.Application.Interfaces;
+﻿using MoneyBankService.Application.Interfaces.Services;
 
 namespace MoneyBankService.Application.Services;
 
