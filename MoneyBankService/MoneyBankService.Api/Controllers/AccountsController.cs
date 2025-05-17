@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MoneyBankService.Application.Dtos;
 using MoneyBankService.Application.Interfaces.Services;
 using MoneyBankService.Domain.Entities;
@@ -71,17 +70,17 @@ namespace MoneyBankService.Api.Controllers
         }
 
         [HttpPut("{id}/Deposit")]
-        public async Task<IActionResult> Deposit(int id, [FromBody] Transaction transaction)
+        public async Task<IActionResult> Deposit(int id, [FromBody] TransactionDto transactionDto)
         {
-            await _accountService.DepositAsync(id, transaction);
+            await _accountService.DepositAsync(id, _mapper.Map<TransactionDto, Transaction>(transactionDto));
 
             return NoContent();
         }
 
         [HttpPut("{id}/Withdrawal")]
-        public async Task<IActionResult> Withdrawal(int id, [FromBody] Transaction transaction)
+        public async Task<IActionResult> Withdrawal(int id, [FromBody] TransactionDto transactionDto)
         {
-            await _accountService.WithdrawAsync(id, transaction);
+            await _accountService.WithdrawAsync(id, _mapper.Map<TransactionDto, Transaction>(transactionDto));
 
             return NoContent();
         }
