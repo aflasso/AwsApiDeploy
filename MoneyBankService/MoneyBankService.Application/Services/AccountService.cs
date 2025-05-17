@@ -123,6 +123,13 @@ public class AccountService : IAccountService
             throw new BadRequestException();
         }
 
+        bool existsAccountNumber = await _accountRepository.ExistsByPropertyAsync(a => a.AccountNumber == transaction.AccountNumber);
+
+        if (!existsAccountNumber)
+        {
+            throw new BadRequestException();
+        }
+
         var account = await _accountRepository.GetByIdAsync(accountId);
 
         if (account is null)
@@ -161,7 +168,7 @@ public class AccountService : IAccountService
     {
         account.BalanceAmount -= transaction.ValueAmount;
 
-        if (account.AccountType == 'C' && account.OverdraftAmount > 0 && account.BalanceAmount < MAX_OVERDRAFT)
+        if (account.AccountType == 'C' && account.BalanceAmount < MAX_OVERDRAFT)
         {
             account.OverdraftAmount = MAX_OVERDRAFT - account.BalanceAmount;
         }
