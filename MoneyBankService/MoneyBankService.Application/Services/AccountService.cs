@@ -1,4 +1,5 @@
-﻿using MoneyBankService.Application.Exceptions;
+﻿using System.Security.Principal;
+using MoneyBankService.Application.Exceptions;
 using MoneyBankService.Application.Interfaces.Repositories;
 using MoneyBankService.Application.Interfaces.Services;
 using MoneyBankService.Domain.Entities;
@@ -13,6 +14,11 @@ public class AccountService : IAccountService
     public AccountService(IAccountRepository accountRepository)
     {
         _accountRepository = accountRepository;
+    }
+
+    public async Task<List<Account>> GetAllAccountsAsync()
+    {
+        return (await _accountRepository.GetAllAsync()).ToList();
     }
 
     public async Task<Account> CreateAccountAsync(Account account)
@@ -49,6 +55,23 @@ public class AccountService : IAccountService
         }
 
         await _accountRepository.RemoveAsync(account);
+    }
+
+    public async Task UpdateAccount(int accountId, Account newAccount)
+    {
+        if (accountId != newAccount.Id)
+        {
+            throw new BadRequestException();
+        }
+
+        bool existsAccountNumber = await _accountRepository.ExistsByPropertyAsync(a => a.AccountNumber == newAccount.AccountNumber);
+
+        if (!existsAccountNumber)
+        {
+            throw new BadRequestException($"La Cuenta [{accountId}] No Existe");
+        }
+
+        await _accountRepository.UpdateAsync(newAccount);
     }
 
     public Task<Account> GetAccountByIdAsync(int accountId)
