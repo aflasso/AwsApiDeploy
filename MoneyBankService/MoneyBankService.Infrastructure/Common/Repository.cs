@@ -67,5 +67,10 @@ namespace MoneyBankService.Infrastructure.Common
 
             return entity!;
         }
+
+        public async Task<bool> ExistsByPropertyAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _appDbContext.Set<T>().AnyAsync(predicate);
+        }
     }
 }
