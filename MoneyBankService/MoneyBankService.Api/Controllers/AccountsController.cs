@@ -22,13 +22,6 @@ namespace MoneyBankService.Api.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/<AccountsController>
-        [HttpGet]
-        public async Task<ActionResult<List<AccountDto>>> Get()
-        {
-            var accounts = await _accountService.GetAllAccountsAsync();
-            return Ok(_mapper.Map<List<Account>, List<AccountDto>>(accounts));
-        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
@@ -37,12 +30,18 @@ namespace MoneyBankService.Api.Controllers
             return Ok(_mapper.Map<Account, AccountDto>(account));
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult<List<AccountDto>>> GetAccounts([FromQuery] string accountNumber = null!)
-        //{
-        //    var accounts = await _accountService.GetAccountsByAccountNumberAsync(accountNumber);
-        //    return Ok(_mapper.Map<List<Account>, List<AccountDto>>(accounts));
-        //}
+        [HttpGet]
+        public async Task<ActionResult<List<AccountDto>>> GetAccounts([FromQuery] string accountNumber = null!)
+        {
+            if (accountNumber == null)
+            {
+                var accounts = await _accountService.GetAllAccountsAsync();
+                return Ok(_mapper.Map<List<Account>, List<AccountDto>>(accounts));
+            }
+
+            var account = await _accountService.GetAccountsByAccountNumberAsync(accountNumber);
+            return Ok(_mapper.Map<List<Account>, List<AccountDto>>(account));
+        }
 
         // POST api/<AccountsController>
         [HttpPost]
