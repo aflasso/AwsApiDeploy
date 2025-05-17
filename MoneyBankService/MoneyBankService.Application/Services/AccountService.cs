@@ -57,7 +57,7 @@ public class AccountService : IAccountService
         await _accountRepository.RemoveAsync(account);
     }
 
-    public async Task UpdateAccount(int accountId, Account newAccount)
+    public async Task<Account> UpdateAccount(int accountId, Account newAccount)
     {
         if (accountId != newAccount.Id)
         {
@@ -71,12 +71,13 @@ public class AccountService : IAccountService
             throw new BadRequestException($"La Cuenta [{accountId}] No Existe");
         }
 
-        await _accountRepository.UpdateAsync(newAccount);
+        return  await _accountRepository.UpdateAsync(newAccount);
+
     }
 
-    public Task<Account> GetAccountByIdAsync(int accountId)
+    public async Task<Account> GetAccountByIdAsync(int accountId)
     {
-        var account = _accountRepository.GetByIdAsync(accountId);
+        var account = await  _accountRepository.GetByIdAsync(accountId);
 
         if (account is null)
         {

@@ -29,20 +29,19 @@ namespace MoneyBankService.Api.Controllers
             return Ok(_mapper.Map<List<Account>, List<AccountDto>>(accounts));
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<AccountDto>>> GetAccounts([FromQuery] string accountNumber = null!)
-        {
-            var accounts = await _accountService.GetAccountsByAccountNumberAsync(accountNumber);
-            return Ok(_mapper.Map<List<Account>, List<AccountDto>>(accounts));
-        }
-
-        // GET api/<AccountsController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Account>> GetAccount(int accountid)
+        public async Task<ActionResult<Account>> GetAccount(int id)
         {
-            var account = await _accountService.GetAccountByIdAsync(accountid);
+            var account = await _accountService.GetAccountByIdAsync(id);
             return Ok(_mapper.Map<Account, AccountDto>(account));
         }
+
+        //[HttpGet]
+        //public async Task<ActionResult<List<AccountDto>>> GetAccounts([FromQuery] string accountNumber = null!)
+        //{
+        //    var accounts = await _accountService.GetAccountsByAccountNumberAsync(accountNumber);
+        //    return Ok(_mapper.Map<List<Account>, List<AccountDto>>(accounts));
+        //}
 
         // POST api/<AccountsController>
         [HttpPost]
@@ -57,9 +56,9 @@ namespace MoneyBankService.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] AccountDto accountDto)
         {
-            await _accountService.UpdateAccount(id, _mapper.Map<AccountDto, Account>(accountDto));
+            var newAccount = await _accountService.UpdateAccount(id, _mapper.Map<AccountDto, Account>(accountDto));
 
-            return NoContent();
+            return Ok(_mapper.Map<Account, AccountDto>(newAccount));
         }
 
         // DELETE api/<AccountsController>/5

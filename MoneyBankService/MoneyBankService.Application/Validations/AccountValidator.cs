@@ -35,8 +35,6 @@ namespace MoneyBankService.Application.Validations
                         .WithMessage("El campo Balance debe ser en formato Moneda (0.00)");
 
                 RuleFor(m => m.OverdraftAmount)
-                        .NotEmpty()
-                        .WithMessage("El campo Sobregiro es Requerido")
                         .Must(v => decimal.Round(v, 2) == v)
                         .WithMessage("El campo Sobregiro debe ser en formato Moneda (0.00)");
         }

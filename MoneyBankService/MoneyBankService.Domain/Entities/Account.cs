@@ -4,6 +4,7 @@ using MoneyBankService.Domain.Common;
 
 namespace MoneyBankService.Domain.Entities
 {
+    [Table("accounts")]
     public class Account : EntityBase
     {
             [Required(ErrorMessage = "El campo de tipo cuenta es Requerido")]
@@ -27,7 +28,6 @@ namespace MoneyBankService.Domain.Entities
             [Column(TypeName = "decimal(18,2)")]
             public decimal BalanceAmount { get; set; }
 
-            [Required]
             [RegularExpression(@"^\d+\.?\d{0,2}$", ErrorMessage = "El campo Balance debe ser en formato Moneda (0.00)")]
             [Column(TypeName = "decimal(18,2)")]
             public decimal OverdraftAmount { get; set; }
