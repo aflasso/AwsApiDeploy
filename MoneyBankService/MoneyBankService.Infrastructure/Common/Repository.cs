@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyBankService.Domain.Common;
-using MoneyBankService.Domain.Exceptions;
+using MoneyBankService.Application.Exceptions;
 using MoneyBankService.Infrastructure.Context;
 using System.Linq.Expressions;
+using MoneyBankService.Application.Interfaces.Repositories;
 
 namespace MoneyBankService.Infrastructure.Common
 {
@@ -65,6 +66,11 @@ namespace MoneyBankService.Infrastructure.Common
             await _appDbContext.SaveChangesAsync();
 
             return entity!;
+        }
+
+        public async Task<bool> ExistsByPropertyAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _appDbContext.Set<T>().AnyAsync(predicate);
         }
     }
 }
