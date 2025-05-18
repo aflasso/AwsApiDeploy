@@ -7,6 +7,11 @@ using MoneyBankService.Infrastructure.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(8080); // expone en 0.0.0.0:8080
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
