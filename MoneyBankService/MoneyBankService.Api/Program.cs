@@ -61,7 +61,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 app.UseExceptionMiddleware();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
