@@ -53,6 +53,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Add the Exception Middleware Handler
+app.UseCors();
 app.UseExceptionMiddleware();
 
 app.UseHttpsRedirection();
