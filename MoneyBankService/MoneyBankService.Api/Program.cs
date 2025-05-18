@@ -7,6 +7,16 @@ using MoneyBankService.Infrastructure.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // Cambia esto al origen de tu frontend
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // Add the DB Context
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("CnnStr")!));
 
