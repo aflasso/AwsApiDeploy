@@ -16,7 +16,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Cambia esto al origen de tu frontend
+        policy.WithOrigins("http://localhost:5173", "http://172.31.17.145:5173", "http://172.18.0.1:5173", "http://54.175.151.5:5173") // Cambia esto al origen de tu frontend
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
